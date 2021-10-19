@@ -3,11 +3,11 @@
     "author": "William Sebastião Teixeira",
     "applications": {
         "gecko": {
-          "id": "sigat@mozilla.org"
+          "id": "IntegracaoSistemaCBMSC@mozilla.org"
         }
       },
-    "name": "Sigat",
-    "version": "1.1",
+    "name": "Integração Sistemas CBMSC",
+    "version": "1.0",
     "content_scripts": [
         {
             "matches": [
