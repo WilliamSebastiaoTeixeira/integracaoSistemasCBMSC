@@ -1,5 +1,9 @@
 {
     "manifest_version": 2,
+    "authors": [ {
+        "name": "William Sebastião Teixeira",
+        "email": "williamsebastiaoteixeira@gmail.com"
+       }],
     "applications": {
         "gecko": {
           "id": "sigat@mozilla.org"
