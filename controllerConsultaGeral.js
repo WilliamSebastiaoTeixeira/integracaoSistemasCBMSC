@@ -1,33 +1,6 @@
-/*
-function b(canvas){
-
-    console.log(canvas); 
-    console.log(canvas.getElementsByTagName('select')[0] == undefined); 
-
-    if(canvas.getElementsByTagName('select')[0] != undefined){
-        angular.element(document.getElementById('row16').getElementsByTagName('select')[0]).scope().form.objects.tpPesquisa = { id: "ID_EDIFICACAO", label: "RE" }; 
-        angular.element(document.getElementById('row16').getElementsByTagName('select')[0]).scope().$digest(); 
-    }
-    var select0 = angular.element(canvas.getElementsByTagName('select')[0]).scope();  
-    select0.form.objects.tpPesquisa = { id: "ID_EDIFICACAO", label: "RE" }; 
-    console.log(select0.form.objects.tpPesquisa);
-    select0.$digest();
-    */
-
-    //scope.form.objects.nm_pesquisa_edificacao.nmPesquisaEdificacao = getQueryVariable("re");
-
-    //scope.$digest(); 
-
-    /*
-    canvas.getElementsByTagName('select')[0].value = "ID_EDIFICACAO"; 
-    canvas.getElementsByTagName('input')[0].value = getQueryVariable("re");
-    canvas.getElementsByTagName('select')[1].value = getQueryVariable("cidade");
-    
-}
-*/
- 
 if(getQueryVariable("re") !== false && getQueryVariable("cidade") !== false){
-    createObserver([['#row4', 0], ['button', 0]], a);
+    //createObserver([['#row4', 0], ['button', 0]], a);
+    b(); 
 }
 
 function a(elemento){
@@ -43,57 +16,57 @@ function b(elemento){
     `
         const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+        var pesquisar = function(id, texto, cidade) {
+
+            var scope =  angular.element(document.querySelectorAll('#tab_0')[0]).scope(); 
+
+            let url =
+                "https://sigat.cbm.sc.gov.br/sigat_sincronia/modulos/relatorio/consulta_edif_esci.php?tipo_consulta="
+                + id
+                + '&texto_consulta=' + texto
+                + '&cidade='+ cidade;
+        
+            fetch(url, {
+                method : "GET",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },         
+            }).then(
+                response => response.json()
+            ).then(
+                (html) => {
+                    if (html != null) {
+                        console.log(html[0]); 
+                        //scope.form.objects.reSelecionadaAntigoSistema = html[0];
+                        //scope.form.objects.resultado = [html[0]];
+                        //scope.$digest(); 
+                    }
+                }
+            );
+        };
+
         var wait = async function() {
-            sleep(100).then(()=>{
+            sleep(200).then(()=>{
                 if(!window.angular){
                     wait();
                 }else{
-                    atualizaValores();
+                    pesquisar("ID_EDIFICACAO", ${getQueryVariable("re")}, ${getQueryVariable("cidade")});
                 }
             }); 
         }
         wait(); 
 
         function atualizaValores(){
-
-            console.log(${getQueryVariable("re")}); 
-
-            var select0 = angular.element(document.querySelectorAll('#row16')[0].querySelectorAll('select')[0]).scope();  
-            select0.form.objects.tpPesquisa = { id: "ID_EDIFICACAO", label: "RE" };
-            select0.$digest();
-
-            text0.form.objects.nm_pesquisa_edificacao.nmPesquisaEdificacao = "${getQueryVariable("re")}";             
-            var text0 = angular.element(document.querySelectorAll('#row16')[0].querySelectorAll('input')[0]).scope();
-            text0.$digest(); 
-
-            var select1 = angular.element(document.querySelectorAll('#row16')[0].querySelectorAll('select')[1]).scope();
-            select1.form.objects.cidadeEdificacaoAntigoSistema.id = ${getQueryVariable("cidade")}; 
-            select1.$digest();
-        }
-        
+            var scope =  angular.element(document.querySelectorAll('#tab_0')[0]).scope(); 
+            scope.form.objects.tpPesquisa = { id: "ID_EDIFICACAO", label: "RE" };
+            scope.form.objects.cidadeEdificacaoAntigoSistema = {id: ${getQueryVariable("cidade")}};
+            //scope.form.objects.nm_pesquisa_edificacao = "${getQueryVariable("re")}";     
+            scope.$digest();
+        }   
     `;
     document.documentElement.appendChild(script);
-    //document.documentElement.removeChild(script);
-
-    /*
-    var wait = async function(elemento) {
-        sleep(1000).then((elemento)=>{
-            showAng();
-            b(elemento); 
-        }); 
-    }
-    wait(elemento);
-    */
-     
-    /*
-    var select0 = angular.element(elemento.querySelectorAll('select')[0]).scope();  
-    select0.form.objects.tpPesquisa = { id: "ID_EDIFICACAO", label: "RE" }; 
-    console.log(select0.form.objects.tpPesquisa);
-    select0.$digest();
-    */
 }
-
-//const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 function createObserver(elementoArr, func){
     var observer = new MutationObserver(function (mutations, me) {
