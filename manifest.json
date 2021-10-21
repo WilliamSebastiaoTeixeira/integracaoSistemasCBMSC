@@ -99,7 +99,7 @@
             "matches": ["https://esci.cbm.sc.gov.br/Safe/Geral/ControllerConsultaGeral*"
             ],
             "js": ["controllerConsultaGeral.js"
-            ]  
+            ]
         }
     ]
 }
