@@ -9,7 +9,8 @@ function a(elemento){
 }
 
 function b(elemento){
-    //Até então, é a melhor solução
+    // -> Até então, é a melhor solução
+    // -> É preciso criar um script dentro da página para conseguir detectar o carregamento do Angular.
     var script = document.createElement('script');
     script.setAttribute('type', 'application/javascript');
     script.textContent = 
