@@ -45,17 +45,12 @@ function scriptInjetado(elemento){
             ).then(
                 (html) => {
                     if (html != null) {
-                        console.log(html[0]); 
-                        
-                        scope.form.objects.cidadeEdificacaoAntigoSistema = {
-                            id: parseInt(getQueryVariable("cidade")) 
-                        };
-
+                        scope.form.objects.cidadeEdificacaoAntigoSistema = {id: parseInt(getQueryVariable("cidade"))};
                         scope.form.objects.reSelecionadaAntigoSistema = html[0]; 
-
-                        console.log(scope.form.objects); 
-
                         scope.form.changeActiveTab(scope.form.tabs[scope.tab.abaCadastrarNovoRe]);
+                        scope.$digest(); 
+
+                        scope.form.objects.edificacao.nomeFantasia = html[0].nm_edificacao; 
                         scope.$digest(); 
                     }
                 }
