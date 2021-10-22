@@ -1,25 +1,32 @@
-if(getQueryVariable("re") !== false && getQueryVariable("cidade") !== false){
-    //createObserver([['#row4', 0], ['button', 0]], a);
-    b(); 
-}
+// Até então, é a melhor solução 
+// É preciso criar um script dentro da página para conseguir detectar o carregamento do Angular.
 
-function a(elemento){
-    createObserver([['#row16', 0]], b);
-    elemento.click();
-}
+scriptInjetado(); 
 
-function b(elemento){
-    // -> Até então, é a melhor solução
-    // -> É preciso criar um script dentro da página para conseguir detectar o carregamento do Angular.
+function scriptInjetado(elemento){
     var script = document.createElement('script');
     script.setAttribute('type', 'application/javascript');
     script.textContent = 
-    `
+        `
         const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-        var pesquisar = function(id, texto, cidade) {
-
-            var scope =  angular.element(document.querySelectorAll('#tab_0')[0]).scope(); 
+        if(getQueryVariable("re") !== false && getQueryVariable("cidade") !== false){
+            wait(); 
+        }
+        
+        async function wait() {
+            sleep(200).then(()=>{
+                if(!window.angular){
+                    wait();
+                }else{
+                    //atualizaValores("ID_EDIFICACAO", getQueryVariable("re"), getQueryVariable("cidade"));
+                    pesquisar("ID_EDIFICACAO", getQueryVariable("re"), getQueryVariable("cidade"));
+                }
+            }); 
+        }
+   
+        function pesquisar(id, texto, cidade) {
+            var scope = angular.element(document.querySelectorAll('.ng-scope')[124]).scope();
 
             let url =
                 "https://sigat.cbm.sc.gov.br/sigat_sincronia/modulos/relatorio/consulta_edif_esci.php?tipo_consulta="
@@ -39,34 +46,44 @@ function b(elemento){
                 (html) => {
                     if (html != null) {
                         console.log(html[0]); 
-                        //scope.form.objects.reSelecionadaAntigoSistema = html[0];
-                        //scope.form.objects.resultado = [html[0]];
-                        //scope.$digest(); 
+                        
+                        scope.form.objects.cidadeEdificacaoAntigoSistema = {
+                            id: parseInt(getQueryVariable("cidade")) 
+                        };
+
+                        scope.form.objects.reSelecionadaAntigoSistema = html[0]; 
+
+                        console.log(scope.form.objects); 
+
+                        scope.form.changeActiveTab(scope.form.tabs[scope.tab.abaCadastrarNovoRe]);
+                        scope.$digest(); 
                     }
                 }
             );
         };
 
-        var wait = async function() {
-            sleep(200).then(()=>{
-                if(!window.angular){
-                    wait();
-                }else{
-                    pesquisar("ID_EDIFICACAO", ${getQueryVariable("re")}, ${getQueryVariable("cidade")});
+        function getQueryVariable(variable){
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++){
+                var pair = vars[i].split("=");
+                if(pair[0] == variable){
+                    return pair[1];
                 }
-            }); 
+            }
+            return(false);  
         }
-        wait(); 
-
-        function atualizaValores(){
-            var scope =  angular.element(document.querySelectorAll('#tab_0')[0]).scope(); 
-            scope.form.objects.tpPesquisa = { id: "ID_EDIFICACAO", label: "RE" };
-            scope.form.objects.cidadeEdificacaoAntigoSistema = {id: ${getQueryVariable("cidade")}};
-            //scope.form.objects.nm_pesquisa_edificacao = "${getQueryVariable("re")}";     
-            scope.$digest();
-        }   
     `;
     document.documentElement.appendChild(script);
+}
+
+//Observa a criação de elementos na tela e executa uma função
+/*
+
+createObserver([['#row4', 0], ['button', 0]], a);
+
+function a(elemento){
+    console.log(elemento); 
 }
 
 function createObserver(elementoArr, func){
@@ -91,7 +108,10 @@ function runForEach(elementoArr){
     });
     return objeto; 
 }
+*/
 
+//Pega os parametros do URL
+/*
 function getQueryVariable(variable){
     var query = window.location.search.substring(1);
     var vars = query.split("&");
@@ -103,3 +123,16 @@ function getQueryVariable(variable){
     }
     return(false);  
 }
+*/
+
+//log nos scopes do Angular
+/*
+var scopeArr = document.querySelectorAll('.ng-scope');
+scopeArr.forEach(((scope, index)=>{
+    if(angular.element(scope).scope().tab != undefined){
+        console.log(index)
+        console.log(scope); 
+        console.log(angular.element(scope).scope());    
+    }
+}));
+*/
