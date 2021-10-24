@@ -19,14 +19,6 @@
         },
         {
             "matches": [
-                "https://*.cbm.sc.gov.br/*"
-            ],
-            "js": [
-                "popup_protocolo1.js"
-            ]
-        },
-        {
-            "matches": [
                 "https://*.cbm.sc.gov.br/sigat/modulos/financeiro/novo_boleto*"
             ],
             "js": [
