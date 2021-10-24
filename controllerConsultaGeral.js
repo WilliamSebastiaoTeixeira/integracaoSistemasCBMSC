@@ -13,13 +13,35 @@ function scriptInjetado(){
                 carregarAbaCriarPreenchida("ID_EDIFICACAO", getQueryVariable("re"), getQueryVariable("cidade"));
             }); 
         }else if(getQueryVariable("reesci") !== false){
-            waitAngular(() =>{
-                carregarDadosRe(getQueryVariable("reesci")); 
-            }); 
+            carregarDadosRe(getQueryVariable("reesci"));  
         }
 
         function carregarDadosRe(re){
-            alert(re); 
+            fetch('https://esci.cbm.sc.gov.br/Safe/Geral/ControllerConsultaGeral/consultar/', {
+                method : "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: '{"texto":"'+ re +'","numgCidade":null,"numrQuantidade":0,"flagMostrarReExcluido":false,"flagOnlyRe":true,"flagOnlyProtocolo":false}', 
+            }).then(
+                response => response.json()
+            ).then(
+                (html) => {                      
+                    var f = document.createElement('form');
+                    f.action='https://esci.cbm.sc.gov.br/Safe/Gerencial/ControllerRegistroEdificacoes/carregarDadosRe/';
+                    f.method='POST';
+
+                    var i = document.createElement('input');
+                    i.type='hidden';
+                    i.name='numgEdificacao';
+                    i.value=html[0].numgEdificacao;
+                    f.appendChild(i);
+
+                    document.body.appendChild(f);
+                    f.submit();
+                } 
+            );
         }
 
         function carregarAbaCriarPreenchida(id, texto, cidade) {
