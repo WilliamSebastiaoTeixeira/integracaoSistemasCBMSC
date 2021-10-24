@@ -1,33 +1,30 @@
 // Até então, é a melhor solução 
-// É preciso criar um script dentro da página para conseguir detectar o carregamento do Angular.
+// É preciso criar um script dentro da página para conseguir detectar o carregamento do Angular
 
 scriptInjetado(); 
 
-function scriptInjetado(elemento){
+function scriptInjetado(){
     var script = document.createElement('script');
     script.setAttribute('type', 'application/javascript');
     script.textContent = 
         `
-        const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
-
         if(getQueryVariable("re") !== false && getQueryVariable("cidade") !== false){
-            wait(); 
-        }
-        
-        async function wait() {
-            sleep(200).then(()=>{
-                if(!window.angular){
-                    wait();
-                }else{
-                    //atualizaValores("ID_EDIFICACAO", getQueryVariable("re"), getQueryVariable("cidade"));
-                    pesquisar("ID_EDIFICACAO", getQueryVariable("re"), getQueryVariable("cidade"));
-                }
+            waitAngular(()=>{
+                carregarAbaCriarPreenchida("ID_EDIFICACAO", getQueryVariable("re"), getQueryVariable("cidade"));
+            }); 
+        }else if(getQueryVariable("reesci") !== false){
+            waitAngular(() =>{
+                carregarDadosRe(getQueryVariable("reesci")); 
             }); 
         }
-   
-        function pesquisar(id, texto, cidade) {
-            var scope = angular.element(document.querySelectorAll('.ng-scope')[124]).scope();
 
+        function carregarDadosRe(re){
+            alert(re); 
+        }
+
+        function carregarAbaCriarPreenchida(id, texto, cidade) {
+            var scope = angular.element(document.querySelectorAll('.ng-scope')[124]).scope();
+            
             let url =
                 "https://sigat.cbm.sc.gov.br/sigat_sincronia/modulos/relatorio/consulta_edif_esci.php?tipo_consulta="
                 + id
@@ -39,23 +36,27 @@ function scriptInjetado(elemento){
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
-                },         
+                }         
             }).then(
                 response => response.json()
             ).then(
                 (html) => {
                     if (html != null) {
-                        scope.form.objects.cidadeEdificacaoAntigoSistema = {id: parseInt(getQueryVariable("cidade"))};
+                        scope.form.objects.cidadeEdificacaoAntigoSistema = {id: parseInt(cidade)};
                         scope.form.objects.reSelecionadaAntigoSistema = html[0]; 
                         scope.form.changeActiveTab(scope.form.tabs[scope.tab.abaCadastrarNovoRe]);
                         scope.$digest(); 
-
                         scope.form.objects.edificacao.nomeFantasia = html[0].nm_edificacao; 
                         scope.$digest(); 
                     }
                 }
             );
         };
+
+        async function waitAngular(funcao, ms = 100) {
+            await new Promise(resolve => setTimeout(resolve, ms))
+                .then(() => !window.angular ? waitAngular() : funcao()); 
+        }
 
         function getQueryVariable(variable){
             var query = window.location.search.substring(1);
@@ -74,7 +75,6 @@ function scriptInjetado(elemento){
 
 //Observa a criação de elementos na tela e executa uma função
 /*
-
 createObserver([['#row4', 0], ['button', 0]], a);
 
 function a(elemento){
