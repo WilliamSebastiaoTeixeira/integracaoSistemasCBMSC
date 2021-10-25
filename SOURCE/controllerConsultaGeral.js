@@ -1,6 +1,3 @@
-// Até então, é a melhor solução 
-// É preciso criar um script dentro da página para conseguir detectar o carregamento do Angular
-
 scriptInjetado(); 
 
 function scriptInjetado(){
