@@ -1,16 +1,20 @@
-if (document.readyState == 'complete') {
+scriptInjetado(); 
 
-    var campo_data = document.getElementsByTagName("tbody")[5].getElementsByTagName("td")[5].getElementsByTagName("input")[0];
+function scriptInjetado(){
+    var script = document.createElement('script');
+    script.setAttribute('type', 'application/javascript');
+    script.textContent = 
+        `
+        var campo_data = document.getElementsByTagName("tbody")[5].getElementsByTagName("td")[5].getElementsByTagName("input")[0];
 
-    var date = new Date();
-    date.setDate(date.getDate() + 15);
-    var d = date.getDate();
-    var m = date.getMonth() + 1;
-    var y = date.getFullYear();
-    var dateString = (d <= 9 ? '0' + d : d) + '/' + (m <= 9 ? '0' + m : m) + '/' + y;
+        var date = new Date();
+        date.setDate(date.getDate() + 15);
+        var d = date.getDate();
+        var m = date.getMonth() + 1;
+        var y = date.getFullYear();
+        var dateString = (d <= 9 ? '0' + d : d) + '/' + (m <= 9 ? '0' + m : m) + '/' + y;
 
-    campo_data.value = dateString; 
-
-    //var tipo = document.getElementsByTagName("tbody")[2].getElementsByTagName("select")[1]; 
-    //tipo.getElementsByTagName("option")[0].innerHTML = tipo.getElementsByTagName("option")[1].selected = " "; 
+        campo_data.value = dateString; 
+        `;
+document.documentElement.appendChild(script);
 }
