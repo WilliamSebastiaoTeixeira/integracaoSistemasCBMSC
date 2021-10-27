@@ -1,0 +1,65 @@
+{
+    "manifest_version": 3,
+    "author": "William Sebastião Teixeira",
+    "name": "Integração Sistemas CBMSC",
+    "version": "1.1",
+    "content_scripts": 
+        [
+            {
+                "matches": ["https://*.cbm.sc.gov.br/sigat/modulos/solicitacoes/rel_geral*"],
+                "js": ["rel_geral.js"]
+            },
+            {
+                "matches": ["https://*.cbm.sc.gov.br/sigat/modulos/financeiro/novo_boleto*"],
+                "js": ["novo_boleto.js"]
+            },
+            {
+                "matches": ["https://*.cbm.sc.gov.br/sigat/modulos/financeiro/novo_boleto_projeto*"],
+                "js": ["novo_boleto.js"]
+            },
+            {
+                "matches": ["https://*.cbm.sc.gov.br/sigat/modulos/financeiro/novo_boleto_habitese*"],
+                "js": ["novo_boleto.js"]
+            },
+            {
+                "matches": ["https://*.cbm.sc.gov.br/sigat/modulos/financeiro/novo_boleto_habitese_rpci*"],
+                "js": ["novo_boleto.js"]
+            },
+            {
+                "matches": ["https://*.cbm.sc.gov.br/sigat/modulos/funcionamento/viabilidade_total*"],
+                "js": ["viabilidade_total.js"]
+            },
+            {
+                "matches": ["https://sgi.cbm.sc.gov.br/p02*"],
+                "js": ["sgi_p02.js"]
+            },
+            {
+                "matches": ["https://sgi.cbm.sc.gov.br/g11*"],
+                "js": ["sgi_g11.js"]
+            },
+            {
+                "matches": ["https://*.cbm.sc.gov.br/sigat/modulos/solicitacoes/source_geral*"],
+                "js": ["source_geral.js"]
+            },
+            {
+                "matches": ["https://*.cbm.sc.gov.br/sigat/modulos/funcionamento/nova_lista_func*"],
+                "js": ["nova_lista_func.js"]
+            },
+            {
+                "matches": ["https://*.cbm.sc.gov.br/sigat/modulos/funcionamento/vist_funcionamento*"],
+                "js": ["vist_funcionamento.js"]  
+            },
+            {
+                "matches": ["https://*.cbm.sc.gov.br/sigat/modulos/gerencial/rel_deferimento_detalhes*"],
+                "js": ["rel_deferimento_detalhes.js"]  
+            },
+            {
+                "matches": ["https://*.cbm.sc.gov.br/sigat/modulos/gerencial/rel_deferimento_list*"],
+                "js": ["rel_deferimento_list.js"]  
+            },
+            {
+                "matches": ["https://esci.cbm.sc.gov.br/Safe/Geral/ControllerConsultaGeral*"],
+                "js": ["controllerConsultaGeral.js"]
+            }
+        ]
+}
