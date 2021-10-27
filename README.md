@@ -7,9 +7,10 @@
   SGI; 
   e-SCI. 
 
+- o Firefox terá suporte até a versão 1.1; Outras versões virão apenas para o Chrome. 
 ## Instalação
 
-- No Firefox,  poderá ser instalada via página "about:debugging#/runtime/this-firefox" e carregando o arquivo firefox/manifest.json no botão de "Carregar extensão temporária...".
+- No Firefox,  poderá ser instalada via página "about:debugging#/runtime/this-firefox" e carregando o arquivo firefox/manifest.json no botão de "Carregar extensão temporária...". 
 
 - No Chrome , poderá ser instalada via página "chrome://extensions/", ativando o modo de desenvolvedor na Header e carregando a pasta Chrome. 
 
